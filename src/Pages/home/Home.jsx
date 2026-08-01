@@ -1,8 +1,8 @@
 import React from 'react'
-import Hero from '../../shared components/Hero'
+import OnboardingCarousel from '../../shared components/OnboardingCarousel/OnboardingCarousel'
 
 export default function Home () {
   return (
-  <Hero />
+  <OnboardingCarousel/>
   )
 }

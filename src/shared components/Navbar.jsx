@@ -8,13 +8,13 @@ export default function Navbar() {
           ☰
         </button>
 
-        <a className="btn btn-ghost text-xl text-orange-600">
+        <a className="btn btn-ghost text-2xl lg:text-3xl text-orange-600">
           MunchXpress
         </a>
       </div>
 
       <div className="flex-none">
-        <button className="btn btn-ghost">Skip</button>
+        <button className="btn btn-ghost lg:text-2xl text-xl text-black">Skip</button>
       </div>
     </div>
   )
