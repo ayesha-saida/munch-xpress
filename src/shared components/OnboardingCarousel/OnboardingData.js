@@ -1,4 +1,3 @@
-//import image1 from '../../assets/carousel picture/artisanal_pizza.png'
 import image1 from '../../assets/carousel picture/bowl_of_fresh_salad.png'
 import image2 from '../../assets/carousel picture/burger_with_melting_cheese.png'
 import image3 from '../../assets/carousel picture/sushi_platter.png'

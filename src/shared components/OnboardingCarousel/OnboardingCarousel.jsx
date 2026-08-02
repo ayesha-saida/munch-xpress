@@ -24,7 +24,7 @@ export default function OnboardingCarousel() {
         <img
           src={slide.image}
           alt={slide.title}
-          className="lg:w-1/2 rounded-3xl object-cover h-[600px]"
+          className="lg:w-1/2 rounded-3xl object-cover h-150"
         />
 
         {/* Card */}

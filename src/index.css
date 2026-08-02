@@ -1,2 +1,24 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+
+@theme {
+  --color-primary: #994700;
+  --color-primary-container: #ff7a00;
+  --color-surface: #fbf9f9;
+  --color-on-surface: #1b1c1c;
+
+  --color-overlay: rgb(0 0 0 / 10%);
+  --color-glass: rgb(255 255 255 / 10%);
+  --color-glass-border: rgb(255 255 255 / 20%);
+
+  --spacing-gutter: 24px;
+  --spacing-lg: 24px;
+  --spacing-xl: 40px;
+
+  --font-display: "Plus Jakarta Sans", sans-serif;  
+}
+
+.custom-shadow {
+    box-shadow: 0 -10px 35px rgba(0,0,0,0.12);
+}
