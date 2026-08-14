@@ -4,6 +4,7 @@ import AuthLayout from "../layouts/AuthLayout"
 import Home from "../Pages/home/Home"
 import Register from "../Pages/Authentications/Register"
 import Login from "../Pages/Authentications/Login"
+import AfterLogin from "../Pages/home/AfterLogin";
 
 export const router = createBrowserRouter([
   {
@@ -12,7 +13,11 @@ export const router = createBrowserRouter([
     children: [
         {
             path: '/',
-            element: <Home />
+            element: <AfterLogin/>  // <Home />
+        },
+        {
+            path: '/afterLogin',
+            element: <AfterLogin />
         },
       ]
   },

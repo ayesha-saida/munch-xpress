@@ -1,11 +1,10 @@
 import React from 'react'
 import saladImg from "../../assets/carousel picture/bowl_of_fresh_salad.png"
-import RegisterForm from "../../shared components/RegisterForm";
+import RegisterForm from "./RegisterForm";
 
 export default function Register() {
   return (
       <main className="min-h-screen bg-stone-50 pt-16 flex flex-col sm:flex-row">
-
 {/* Desktop Left / Mobile Top Image Section */} 
 
 <div className="relative w-full h-[35vh] md:h-auto md:w-1/2 overflow-hidden bg-gray-300">
@@ -28,6 +27,5 @@ className="w-full h-full object-cover md:clip-none" />
 {/* Registration Form Section */}
 <RegisterForm /> 
       </main>
-
   );
 }
