@@ -19,12 +19,12 @@ export default function SignOut() {
        errorToast(error)
     });
   }
+
   return (
     <div>
             {/* logout Button */}
-  <button type='submit' className="mt-4 h-14 w-full rounded-xl
-  bg-orange-500 text-white text-sm md:text-lg font-semibold shadow-lg
-    shadow-orange-500/20 transition hover:bg-orange-600 active:scale-95
+  <button type='submit' className="text-sm  
+    hover:text-orange-600 hover:bg-white 
     hover:underline cursor-pointer" onClick={handleLogOut}>
             Logout
       </button>    
