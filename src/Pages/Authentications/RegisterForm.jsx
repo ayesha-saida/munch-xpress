@@ -1,23 +1,37 @@
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import icon from '../../assets/google-icon.png'
-import { Link, useLocation, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
+import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../context providers/AuthProvider';
-import { updateProfile} from 'firebase/auth'
 import { defaultToast, errorToast, successToast } from '../../shared components/ToastContainer';
+import FieldError from '../../shared components/FieldError';
+import { inputClass } from '../../utils/formStyle';
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io';
 import { BeatLoader } from 'react-spinners';
 
+/* at least one lowercase, one uppercase, one digit, one special, min 6 */
+const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+])[A-Za-z\d@$!%*?&#^()\-_=+]{6,}$/
+
 export default function RegisterForm() {
-  
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const navigate = useNavigate()
 
-  const { registerUser, 
+  const { registerUser,
           signInWithGoogle,
-          user, loading, 
+          user, loading,
           updateUserProfile} = useContext(AuthContext)
+
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: { name: '', email: '', password: '', confirmPassword: '' },
+  })
 
   useEffect(() => {
     if (!loading && user) {
@@ -29,39 +43,15 @@ export default function RegisterForm() {
     return <BeatLoader />
   }
 
-   const handleRegister = async(e) => {
-    e.preventDefault()
-    const name = e.target.name.value;
-    const email = e.target.email.value;
-    const password = e.target.password.value;
-    const confirmPassword = e.target.confirmPassword.value;
-
-  console.log({name, email, password, confirmPassword})
-
-  if (password !== confirmPassword) {
-    errorToast('Passwords do not match')
-    return
-  }
-  
-     /* password validation */
-   const regExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#^()\-_=+])[A-Za-z\d@$!%*?&#^()\-_=+]{6,}$/;
-
-    console.log(regExp.test(password));
-
-    if (!regExp.test(password)) {
-     errorToast(
-        "Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character")
-      return;
-    }
-
+   const handleRegister = async ({ name, email, password }) => {
   try {
-    const result = await registerUser(email, password)
+    await registerUser(email, password)
 
     await updateUserProfile({
       displayName: name
     })
 
-   successToast('Registration Successfull 🎉')  
+   successToast('Registration Successfull 🎉')
    navigate('/')
   }
 
@@ -97,7 +87,7 @@ export default function RegisterForm() {
   };
 }
 
-  const handleGoogleSignIn = async() => {    
+  const handleGoogleSignIn = async() => {
     try {
     const result = await signInWithGoogle()
 
@@ -122,67 +112,110 @@ export default function RegisterForm() {
 <div className="relative z-10 flex w-full items-start justify-center
    bg-gray-50 p-6 md:p-10 -mt-10 md:mt-0 md:w-1/2 md:items-center md:bg-transparent">
 
-<div className="mb-10 w-full max-w-md rounded-3xl bg-white p-6 
+<div className="mb-10 w-full max-w-md rounded-3xl bg-white p-6
   custom-shadow md:rounded-xl md:p-10">
 <div className="mb-10 text-center md:text-left">
 <h1 className="text-3xl md:text-5xl font-bold text-gray-900">Start Your Journey</h1>
 <p className="pt-3 text-lg md:text-xl text-gray-600">Create an account to explore premium flavors.</p>
 </div>
 
-<form onSubmit={handleRegister} className="space-y-4">
+<form onSubmit={handleSubmit(handleRegister)} noValidate className="space-y-4">
 {/* Full Name */}
 <div className="space-y-1">
 <label className="block text-sm md:text-lg font-medium text-gray-700">Full Name</label>
-  <input className="w-full h-14 rounded-xl border border-gray-300 px-4 
-  transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500 
-  outline-none" name='name' placeholder="Your name" type="text"/>
+  <input
+    {...register('name', {
+      required: 'Name is required',
+      minLength: { value: 2, message: 'Name is too short' },
+    })}
+    className={inputClass(errors.name)} placeholder="Your name" type="text"/>
+
+  <FieldError error={errors.name} />
 </div>
 
 {/* Email */}
 <div className="space-y-1">
 <label className="block text-sm md:text-lg font-medium text-gray-700">Email Address</label>
- 
-  <input className="w-full h-14 rounded-xl border border-gray-300 px-4
-  transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500 outline-none"
-  name='email' placeholder="your@email.com" type="email"/>
+
+  <input
+    {...register('email', {
+      required: 'Email is required',
+      pattern: {
+        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: 'Enter a valid email address',
+      },
+    })}
+    className={inputClass(errors.email)} placeholder="your@email.com" type="email"/>
+
+  <FieldError error={errors.email} />
 </div>
 
 {/* Password Grid */}
 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div className="space-y-1 relative">
+<div className="space-y-1">
 <label className="block text-sm md:text-lg font-medium text-gray-700">Password</label>
-  
-  <input className="w-full h-14 rounded-xl border border-gray-300 px-4 
-  transition focus:border-orange-500 focus:ring-2 focus:ring-orange-500 
-  outline-none" name='password' placeholder="••••••••" type={showPassword ? "text" : "password"}/>
 
-<span onClick={()=> setShowPassword(!showPassword) } className='absolute right-3.75 top-12.5 cursor-pointer z-50'> 
- {showPassword ? <IoIosEye /> :  <IoIosEyeOff /> }   
- </span>
+{/* Wrapper is the positioning context, so the toggle centres on the input
+    itself and stays put when the label line height changes at md. */}
+<div className="relative">
+  <input
+    {...register('password', {
+      required: 'Password is required',
+      minLength: { value: 6, message: 'Use at least 6 characters' },
+      pattern: {
+        value: passwordPattern,
+        message: 'Add an uppercase, a lowercase, a number and a special character',
+      },
+    })}
+    className={`${inputClass(errors.password)} pr-12`}
+    placeholder="••••••••" type={showPassword ? "text" : "password"}/>
+
+<button type='button' onClick={()=> setShowPassword(!showPassword) }
+  aria-label={showPassword ? 'Hide password' : 'Show password'}
+  aria-pressed={showPassword}
+  className='absolute inset-y-0 right-0 flex w-12 items-center justify-center
+  rounded-r-xl text-xl text-gray-500 cursor-pointer transition hover:text-gray-700'>
+ {showPassword ? <IoIosEye /> :  <IoIosEyeOff /> }
+ </button>
+</div>
+
+  <FieldError error={errors.password} />
 </div>
 
 
-<div className="space-y-1 relative">
+<div className="space-y-1">
 <label className="block text-sm md:text-lg font-medium text-gray-700">Confirm Password</label>
-  
-  <input className="w-full h-14 rounded-xl border
-  border-gray-300 px-4 transition focus:border-orange-500 focus:ring-2
-  focus:ring-orange-500 outline-none" name='confirmPassword' 
-  placeholder="••••••••" type={showConfirmPassword ? "text" : "password"}/>
 
-<span onClick={()=> setShowConfirmPassword(!showConfirmPassword) } className='absolute right-3.75 top-12.5 cursor-pointer z-50'> 
- {showConfirmPassword ? <IoIosEye /> :  <IoIosEyeOff /> }   
- </span>
+<div className="relative">
+  <input
+    {...register('confirmPassword', {
+      required: 'Please confirm your password',
+      validate: (value) => value === getValues('password') || 'Passwords do not match',
+    })}
+    className={`${inputClass(errors.confirmPassword)} pr-12`}
+    placeholder="••••••••" type={showConfirmPassword ? "text" : "password"}/>
+
+<button type='button' onClick={()=> setShowConfirmPassword(!showConfirmPassword) }
+  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+  aria-pressed={showConfirmPassword}
+  className='absolute inset-y-0 right-0 flex w-12 items-center justify-center
+  rounded-r-xl text-xl text-gray-500 cursor-pointer transition hover:text-gray-700'>
+ {showConfirmPassword ? <IoIosEye /> :  <IoIosEyeOff /> }
+ </button>
+</div>
+
+  <FieldError error={errors.confirmPassword} />
 </div>
 </div>
 
 
 {/*Account creating button */}
-<button type='submit'
+<button type='submit' disabled={isSubmitting}
   className="mt-4 h-14 w-full rounded-xl bg-orange-500
-  text-white text-sm md:text-lg font-semibold 
-  shadow-lg shadow-orange-500/20 transition hover:bg-orange-600 active:scale-95">
-                        Create Account
+  text-white text-sm md:text-lg font-semibold
+  shadow-lg shadow-orange-500/20 transition hover:bg-orange-600 active:scale-95
+  disabled:cursor-not-allowed disabled:opacity-60">
+                        {isSubmitting ? 'Creating account...' : 'Create Account'}
 </button>
 </form>
 
@@ -218,6 +251,6 @@ export default function RegisterForm() {
   </p>
 </div>
 </div>
-</div> 
+</div>
   );
 }
