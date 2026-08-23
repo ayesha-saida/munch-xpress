@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { useNavigate } from 'react-router'
 import { AuthContext } from '../context providers/AuthProvider'
-import { successToast } from './ToastContainer'
+import { successToast, errorToast } from './ToastContainer'
 
 
 export default function SignOut() {    

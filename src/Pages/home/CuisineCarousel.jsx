@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 
-import pizza from '../../assets/various food/Melting Cheese Pizza.jpg'
+import curry from '../../assets/various food/Chicken Curry.jpg'
 import burger from '../../assets/various food/burger 2.jpg'
 import biriyani from '../../assets/various food/Chicken Biryani.jpg'
 import cakes from '../../assets/dessert/1008102697847658829.jpg'
@@ -9,7 +9,7 @@ import momos from '../../assets/momo/Dumpling momos with sauce.jpg'
 import shawarma from '../../assets/shorma/Beef & Cheese Wrap.jpg'
 
 const cuisines = [
-  { name: "Pizza", image: pizza },
+  { name: "Bengali Cuisine", image: curry },
   { name: "Biryani", image: biriyani },
   { name: "Burgers", image: burger },
   { name: "Dessert", image: cakes },
