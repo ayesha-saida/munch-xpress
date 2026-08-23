@@ -1,11 +1,14 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router'
+import { useForm } from 'react-hook-form'
 import { AuthContext } from '../../../context providers/AuthProvider'
 import { errorToast, successToast } from '../../../shared components/ToastContainer'
 import Loading from '../../../shared components/Loading'
+import FieldError from '../../../shared components/FieldError'
 import userIcon from '../../../assets/user-icon.png'
 import { getDeliveryDetails, saveDeliveryDetails, isValidPhone } from '../../../utils/deliveryDetails'
 import { uploadImage, validateImage } from '../../../utils/imageUpload'
+import { inputClass, textareaClass } from '../../../utils/formStyle'
 import { FaRegEdit, FaRegUserCircle } from 'react-icons/fa'
 import { MdVerified, MdOutlineEmail, MdOutlineCalendarMonth, MdFingerprint, MdOutlineLocalPhone, MdOutlineLocationOn, MdOutlineFileUpload } from 'react-icons/md'
 
@@ -28,8 +31,16 @@ export default function Profile() {
   const { user, loading, updateUserProfile } = useContext(AuthContext)
 
   const [isEditing, setIsEditing] = useState(false)
-  const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: { displayName: '', phone: '', address: '' },
+  })
 
   // onAuthStateChanged does not fire for profile updates, so a saved edit is
   // held here (tagged with the uid it belongs to) and preferred over the
@@ -122,32 +133,27 @@ export default function Profile() {
     setRemovePhoto(false)
   }
 
+  // the editor is only mounted while open, so the form is seeded on open
+  // rather than through useForm defaultValues, which are read too early
+  const openEditor = () => {
+    reset({
+      displayName: profile.displayName,
+      phone: delivery.phone,
+      address: delivery.address,
+    })
+
+    setPhotoFile(null)
+    setRemovePhoto(false)
+    setIsEditing(true)
+  }
+
   const closeEditor = () => {
     setIsEditing(false)
     setPhotoFile(null)
     setRemovePhoto(false)
   }
 
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault()
-
-    const displayName = e.target.displayName.value.trim()
-    const phone = e.target.phone.value.trim()
-    const address = e.target.address.value.trim()
-
-    if (!displayName) {
-      errorToast('Please enter your name')
-      return
-    }
-
-    // both are optional, only checked when something was typed
-    if (phone && !isValidPhone(phone)) {
-      errorToast('Please enter a valid phone number, for example +8801712345678')
-      return
-    }
-
-    setSaving(true)
-
+  const handleUpdateProfile = async ({ displayName, phone, address }) => {
     try {
       // keep the current picture unless a new one was picked or it was removed
       let photoURL = removePhoto ? '' : profile.photoURL
@@ -170,7 +176,6 @@ export default function Profile() {
       errorToast(error.message || 'Could not update your profile')
     } finally {
       setUploading(false)
-      setSaving(false)
     }
   }
 
@@ -232,7 +237,7 @@ export default function Profile() {
               {/* Edit toggle */}
               <button
                 type="button"
-                onClick={() => (isEditing ? closeEditor() : setIsEditing(true))}
+                onClick={() => (isEditing ? closeEditor() : openEditor())}
                 className="mt-6 flex h-12 w-full items-center justify-center
                   gap-2 rounded-xl border border-orange-200 bg-white text-sm
                   font-medium text-gray-800 transition-colors duration-200
@@ -375,7 +380,7 @@ export default function Profile() {
 
                   <button
                     type="button"
-                    onClick={() => setIsEditing(true)}
+                    onClick={openEditor}
                     className="mt-4 h-12 rounded-xl bg-orange-500 px-8 text-sm
                       font-semibold text-white shadow-lg shadow-orange-500/20
                       transition hover:bg-orange-600 active:scale-95">
@@ -397,7 +402,7 @@ export default function Profile() {
                   and address are optional and saved for future orders.
                 </p>
 
-                <form onSubmit={handleUpdateProfile} className="mt-6 space-y-4">
+                <form onSubmit={handleSubmit(handleUpdateProfile)} noValidate className="mt-6 space-y-4">
 
                   {/* Display name */}
                   <div className="space-y-1">
@@ -407,14 +412,17 @@ export default function Profile() {
                     </label>
 
                     <input
-                      name="displayName"
+                      {...register('displayName', {
+                        setValueAs: (value) => (value || '').trim(),
+                        required: 'Name is required',
+                        minLength: { value: 2, message: 'Name is too short' },
+                      })}
                       type="text"
-                      defaultValue={profile.displayName}
                       placeholder="Your name"
-                      className="h-14 w-full rounded-xl border border-gray-300
-                        px-4 outline-none transition focus:border-orange-500
-                        focus:ring-2 focus:ring-orange-500"
+                      className={inputClass(errors.displayName)}
                     />
+
+                    <FieldError error={errors.displayName} />
                   </div>
 
                   {/* Profile picture */}
@@ -508,14 +516,17 @@ export default function Profile() {
                     </label>
 
                     <input
-                      name="phone"
+                      {...register('phone', {
+                        setValueAs: (value) => (value || '').trim(),
+                        validate: (value) => !value || isValidPhone(value)
+                          || 'Enter a valid number, for example +8801712345678',
+                      })}
                       type="tel"
-                      defaultValue={delivery.phone}
                       placeholder="+880 1712 345678"
-                      className="h-14 w-full rounded-xl border border-gray-300
-                        px-4 outline-none transition focus:border-orange-500
-                        focus:ring-2 focus:ring-orange-500"
+                      className={inputClass(errors.phone)}
                     />
+
+                    <FieldError error={errors.phone} />
 
                     <p className="text-[12px] text-gray-500">
                       We only use this to reach you about a delivery.
@@ -530,15 +541,17 @@ export default function Profile() {
                     </label>
 
                     <textarea
-                      name="address"
+                      {...register('address', {
+                        setValueAs: (value) => (value || '').trim(),
+                        maxLength: { value: 300, message: 'Address is too long' },
+                      })}
                       rows={3}
                       maxLength={300}
-                      defaultValue={delivery.address}
                       placeholder="House, road, area, city"
-                      className="w-full resize-none rounded-xl border
-                        border-gray-300 px-4 py-3 outline-none transition
-                        focus:border-orange-500 focus:ring-2 focus:ring-orange-500"
+                      className={textareaClass(errors.address)}
                     />
+
+                    <FieldError error={errors.address} />
 
                     <p className="text-[12px] text-gray-500">
                       Saved for next time so checkout stays quick.
@@ -550,7 +563,7 @@ export default function Profile() {
                     {/* Save */}
                     <button
                       type="submit"
-                      disabled={saving}
+                      disabled={isSubmitting}
                       className="h-14 w-full rounded-xl bg-orange-500 text-sm
                         font-semibold text-white shadow-lg shadow-orange-500/20
                         transition hover:bg-orange-600 active:scale-95
@@ -558,14 +571,14 @@ export default function Profile() {
                         md:text-lg">
                       {uploading
                         ? 'Uploading photo...'
-                        : saving ? 'Saving...' : 'Save Changes'}
+                        : isSubmitting ? 'Saving...' : 'Save Changes'}
                     </button>
 
                     {/* Cancel */}
                     <button
                       type="button"
                       onClick={closeEditor}
-                      disabled={saving}
+                      disabled={isSubmitting}
                       className="h-14 w-full rounded-xl border border-gray-300
                         bg-white text-sm font-semibold text-gray-800 transition
                         hover:bg-gray-100 active:scale-95
