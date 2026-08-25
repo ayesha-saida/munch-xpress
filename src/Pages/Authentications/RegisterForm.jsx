@@ -21,7 +21,7 @@ export default function RegisterForm() {
 
   const { registerUser,
           signInWithGoogle,
-          user, loading,
+          user, loading, syncUser,
           updateUserProfile} = useContext(AuthContext)
 
   const {
@@ -50,6 +50,12 @@ export default function RegisterForm() {
     await updateUserProfile({
       displayName: name
     })
+
+  /* The user record already exists because authentication triggered its creation,
+     but the name wasn't available at that moment.
+     Now that we have the name, update the existing database record with it. */
+
+    await syncUser()
 
    successToast('Registration Successfull 🎉')
    navigate('/')

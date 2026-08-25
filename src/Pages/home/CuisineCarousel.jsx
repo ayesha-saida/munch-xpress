@@ -1,12 +1,12 @@
 import React, { useRef } from "react";
 
-import curry from '../../assets/various food/Chicken Curry.jpg'
-import burger from '../../assets/various food/burger 2.jpg'
-import biriyani from '../../assets/various food/Chicken Biryani.jpg'
-import cakes from '../../assets/dessert/1008102697847658829.jpg'
-import fast_food from '../../assets/various food/fast_food.jpg'
-import momos from '../../assets/momo/Dumpling momos with sauce.jpg'
-import shawarma from '../../assets/shorma/Beef & Cheese Wrap.jpg'
+import curry from '../../assets/cuisine carousel/Chicken Curry.jpg'
+import burger from '../../assets/cuisine carousel/burger 2.jpg'
+import biriyani from '../../assets/cuisine carousel/Chicken Biryani.jpg'
+import cakes from '../../assets/cuisine carousel/1008102697847658829.jpg'
+import fast_food from '../../assets/cuisine carousel/fast_food.jpg'
+import momos from '../../assets/cuisine carousel/Dumpling momos with sauce.jpg'
+import shawarma from '../../assets/cuisine carousel/Beef & Cheese Wrap.jpg'
 
 const cuisines = [
   { name: "Bengali Cuisine", image: curry },

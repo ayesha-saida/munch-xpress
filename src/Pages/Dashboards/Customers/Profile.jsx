@@ -28,7 +28,7 @@ const formatDate = (value) => {
 }
 
 export default function Profile() {
-  const { user, loading, updateUserProfile } = useContext(AuthContext)
+  const { user, loading, updateUserProfile, syncUser } = useContext(AuthContext)
 
   const [isEditing, setIsEditing] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -164,6 +164,8 @@ export default function Profile() {
       }
 
       await updateUserProfile({ displayName, photoURL })
+
+      await syncUser()
 
       saveDeliveryDetails(user.uid, { phone, address })
 

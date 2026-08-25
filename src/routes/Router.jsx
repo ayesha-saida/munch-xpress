@@ -10,6 +10,9 @@ import Profile from "../Pages/Dashboards/Customers/Profile";
 import Discover from "../Pages/Discover";
 import Restaurents from "../Pages/Restaurents";
 import ErrorHandle from "../Pages/ErrorHandle";
+import DashboardLayout from "../layouts/DashboardLayout";
+import Restaurant from "../Pages/Dashboards/Restaurent owners/Restaurant";
+import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +53,21 @@ export const router = createBrowserRouter([
         {
             path: 'login',
             element: <Login />
+        },
+      ]
+  },
+
+  {
+    path: "/",
+    element: <DashboardLayout /> ,
+    children: [        
+        {
+            path: 'restaurents',
+            element:  <PrivateRoute> <Restaurant /> </PrivateRoute> 
+        },
+        {
+            path: 'admin',
+            element:  <PrivateRoute> <AdminDashboard /> </PrivateRoute>
         },
       ]
   },
