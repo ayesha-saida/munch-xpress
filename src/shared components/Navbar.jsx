@@ -61,7 +61,7 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content bg-base-100
             rounded-box z-1 mt-3 w-52 p-2 shadow">
           
-            <li> <Link to={role === "admin" ? "/dashboard/admin" : "/profile"}
+            <li> <Link to={role === "admin" ? "/dashboard/users" : "/profile"}
              className="justify-between text-sm hover:underline hover:text-orange-500">                          
                       Profile   </Link> </li> 
 

@@ -13,6 +13,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Restaurant from "../Pages/Dashboards/Restaurant owners/Restaurant";
 import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
 import AdminRoute from "./AdminRoute"
+import DashboardHome from "../Pages/Dashboards/DashboadHome";
+import Users from "../Pages/Dashboards/Admin/Users";
 
 export const router = createBrowserRouter([
   {
@@ -55,15 +57,19 @@ export const router = createBrowserRouter([
 
   {
     path: "/dashboard",
-    element: <DashboardLayout /> ,
-    children: [        
+    element: <PrivateRoute> <DashboardLayout /> </PrivateRoute> ,
+    children: [
+        {
+            index: true,
+            element: <DashboardHome />
+        },        
         {
             path: 'restaurants',
             element:  <PrivateRoute> <Restaurant /> </PrivateRoute> 
         },
         {
-            path: 'admin',
-            element:  <AdminRoute> <AdminDashboard /> </AdminRoute>
+            path: 'users',
+            element:  <AdminRoute> <Users /> </AdminRoute>
         },
       ]
   },

@@ -5,7 +5,7 @@ import { createUserWithEmailAndPassword,
          signOut, updateProfile, GoogleAuthProvider, 
          signInWithPopup, onAuthStateChanged,
          sendPasswordResetEmail } from 'firebase/auth' 
-import { axiosSecure } from '../api/axiosSecure.jsx'
+import { axiosSecure } from '../api/axiosSecure.js'
 
 
 export const  AuthContext = createContext(null)
