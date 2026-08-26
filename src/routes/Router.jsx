@@ -8,11 +8,11 @@ import OnboardingCarousel from "../shared components/OnboardingCarousel/Onboardi
 import PrivateRoute from "./PrivateRoute";
 import Profile from "../Pages/Dashboards/Customers/Profile";
 import Discover from "../Pages/Discover";
-import Restaurents from "../Pages/Restaurents";
 import ErrorHandle from "../Pages/ErrorHandle";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Restaurant from "../Pages/Dashboards/Restaurent owners/Restaurant";
+import Restaurant from "../Pages/Dashboards/Restaurant owners/Restaurant";
 import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
+import AdminRoute from "./AdminRoute"
 
 export const router = createBrowserRouter([
   {
@@ -31,10 +31,6 @@ export const router = createBrowserRouter([
         {
             path: '/discover',
             element: <Discover />
-        },
-        {
-            path: '/restaurants',
-            element: <Restaurents />
         },
       ]
   },
@@ -58,16 +54,16 @@ export const router = createBrowserRouter([
   },
 
   {
-    path: "/",
+    path: "/dashboard",
     element: <DashboardLayout /> ,
     children: [        
         {
-            path: 'restaurents',
+            path: 'restaurants',
             element:  <PrivateRoute> <Restaurant /> </PrivateRoute> 
         },
         {
             path: 'admin',
-            element:  <PrivateRoute> <AdminDashboard /> </PrivateRoute>
+            element:  <AdminRoute> <AdminDashboard /> </AdminRoute>
         },
       ]
   },

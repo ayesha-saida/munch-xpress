@@ -6,8 +6,8 @@ import { AuthContext } from '../../context providers/AuthProvider';
 import { errorToast, successToast } from '../../shared components/ToastContainer';
 import FieldError from '../../shared components/FieldError';
 import { inputClass } from '../../utils/formStyle';
-import { BeatLoader } from 'react-spinners';
 import { IoIosEye, IoIosEyeOff } from 'react-icons/io';
+import Loading from '../../shared components/Loading';
 
 export default function LoginForm() {
 
@@ -35,7 +35,7 @@ export default function LoginForm() {
   }, [user, loading, navigate])
 
   if (loading) {
-    return <BeatLoader />
+    return <Loading />
   }
 
    const handleLogin = async ({ email, password }) => {

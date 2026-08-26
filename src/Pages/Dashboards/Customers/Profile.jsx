@@ -1,5 +1,4 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router'
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../../../context providers/AuthProvider'
 import { errorToast, successToast } from '../../../shared components/ToastContainer'
@@ -10,8 +9,11 @@ import { getDeliveryDetails, saveDeliveryDetails, isValidPhone } from '../../../
 import { uploadImage, validateImage } from '../../../utils/imageUpload'
 import { inputClass, textareaClass } from '../../../utils/formStyle'
 import { FaRegEdit, FaRegUserCircle } from 'react-icons/fa'
-import { MdVerified, MdOutlineEmail, MdOutlineCalendarMonth, MdFingerprint, MdOutlineLocalPhone, MdOutlineLocationOn, MdOutlineFileUpload } from 'react-icons/md'
+import { MdVerified, MdOutlineEmail, MdOutlineCalendarMonth, 
+         MdFingerprint, MdOutlineLocalPhone, MdOutlineLocationOn, 
+        MdOutlineFileUpload} from 'react-icons/md'
 
+        
 // readable labels for the firebase provider ids
 const providerLabels = {
   'google.com': 'Google',
@@ -79,36 +81,6 @@ export default function Profile() {
       <main className="min-h-screen bg-gray-50 pt-16">
         <div className="flex min-h-100 items-center justify-center">
           <Loading />
-        </div>
-      </main>
-    )
-  }
-
-  // not signed in
-  if (!user) {
-    return (
-      <main className="min-h-screen bg-gray-50 pt-16">
-        <div className="mx-auto flex min-h-100 w-[calc(100%-48px)] max-w-md
-          flex-col items-center justify-center gap-5 py-16 text-center">
-
-          <FaRegUserCircle className="h-14 w-14 text-orange-600" />
-
-          <h1 className="text-2xl font-bold text-gray-900 sm:text-3xl">
-            You're not signed in
-          </h1>
-
-          <p className="text-base text-gray-600">
-            Log in to view your MunchXpress profile and order history.
-          </p>
-
-          <Link
-            to={'/login'}
-            className="flex h-14 items-center justify-center rounded-xl
-              bg-orange-500 px-10 text-sm font-semibold text-white shadow-lg
-              shadow-orange-500/20 transition hover:bg-orange-600
-              active:scale-95 md:text-lg">
-            Login
-          </Link>
         </div>
       </main>
     )

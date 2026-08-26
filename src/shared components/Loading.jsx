@@ -1,13 +1,20 @@
 import React from 'react'
+import { BeatLoader } from 'react-spinners'
 
 export default function Loading() {
   return (
-    <div className='flex justify-center items-center space-x-5 py-5'>
-        <span className="loading loading-dots loading-xs"></span>
-        <span className="loading loading-dots loading-sm"></span>
-        <span className="loading loading-dots loading-md"></span>
-        <span className="loading loading-dots loading-lg"></span>
-        <span className="loading loading-dots loading-xl"></span>
-    </div>
+ <div className="flex justify-center items-center py-5">
+  <div className="sm:hidden">
+    <BeatLoader size={6} />
+  </div>
+
+  <div className="hidden sm:block lg:hidden">
+    <BeatLoader size={9} />
+  </div>
+
+  <div className="hidden lg:block">
+    <BeatLoader size={20} />
+  </div>
+</div>
   )
-}
+}  

@@ -7,18 +7,17 @@ import { RxHamburgerMenu } from 'react-icons/rx'
 import SignOut from './SignOut'
 
 export default function Navbar() {
-    const {user} = useContext(AuthContext) 
+    const {user, role} = useContext(AuthContext) 
 
     const links = ( <>    
      <li> <NavLink to={'/'} className="hover:text-orange-600 hover:underline"> Home </NavLink> </li>
      <li> <NavLink to={'/discover'} className="hover:text-orange-600 hover:underline"> Discover </NavLink> </li>
-     <li> <NavLink to={'/restaurants'} className="hover:text-orange-600 hover:underline"> Restaurants </NavLink> </li>
-
+     
        { !user && (
      <li> <NavLink to={'/login'} className="hover:text-orange-600 hover:underline">Login</NavLink> </li>
     )}
-  </>)  
-
+  </>)
+      
   return (
 <div className="navbar bg-base-100 shadow-sm fixed top-0 z-50">
 
@@ -62,8 +61,9 @@ export default function Navbar() {
             className="menu menu-sm dropdown-content bg-base-100
             rounded-box z-1 mt-3 w-52 p-2 shadow">
           
-            <li><Link to={'/profile'} className="justify-between text-sm hover:underline hover:text-orange-500">
-                Profile </Link> </li>
+            <li> <Link to={role === "admin" ? "/dashboard/admin" : "/profile"}
+             className="justify-between text-sm hover:underline hover:text-orange-500">                          
+                      Profile   </Link> </li> 
 
             <li> <SignOut/>  </li>
           </ul>
