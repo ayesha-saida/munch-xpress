@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-const ErrorPage = () => {
+const ErrorHandle = () => {
   return (
     <div  className='min-h-screen flex items-center justify-center'>
        <div className='text-center'>
@@ -17,4 +17,4 @@ const ErrorPage = () => {
   )
 }
 
-export default ErrorPage
+export default ErrorHandle

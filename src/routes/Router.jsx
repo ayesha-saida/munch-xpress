@@ -8,7 +8,7 @@ import OnboardingCarousel from "../shared components/OnboardingCarousel/Onboardi
 import PrivateRoute from "./PrivateRoute";
 import Profile from "../Pages/Dashboards/Customers/Profile";
 import Discover from "../Pages/Discover";
-import ErrorHandle from "../Pages/ErrorHandle";
+import ErrorHandle from "../shared components/ErrorHandle";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Restaurant from "../Pages/Dashboards/Restaurant owners/Restaurant";
 import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
