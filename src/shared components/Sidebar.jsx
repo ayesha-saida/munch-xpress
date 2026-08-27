@@ -133,9 +133,9 @@ export default function Sidebar() {
                         border-b border-gray-100 px-6">
 
           <div>
-            <h1 className="text-2xl font-extrabold text-orange-800">
+            <NavLink to={'/'} className="text-2xl font-extrabold text-orange-800">
               MunchXpress
-            </h1>
+            </NavLink>
           </div>
 
           {/* Close button */}

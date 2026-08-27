@@ -15,6 +15,7 @@ import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
 import AdminRoute from "./AdminRoute"
 import DashboardHome from "../Pages/Dashboards/DashboadHome";
 import Users from "../Pages/Dashboards/Admin/Users";
+import BecomeSeller from "../Pages/Dashboards/Customers/BecomeSeller";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
         {
             path: '/profile',
            element: <PrivateRoute> <Profile /> </PrivateRoute> 
+        },
+        {
+            path: '/become-a-seller',
+            element: <PrivateRoute> <BecomeSeller /> </PrivateRoute>
         },
         {
             path: '/discover',

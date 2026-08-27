@@ -1,4 +1,5 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
+import { Link } from 'react-router';
 import { useForm } from 'react-hook-form'
 import { AuthContext } from '../../../context providers/AuthProvider'
 import { errorToast, successToast } from '../../../shared components/ToastContainer'
@@ -11,7 +12,10 @@ import { inputClass, textareaClass } from '../../../utils/formStyle'
 import { FaRegEdit, FaRegUserCircle } from 'react-icons/fa'
 import { MdVerified, MdOutlineEmail, MdOutlineCalendarMonth, 
          MdFingerprint, MdOutlineLocalPhone, MdOutlineLocationOn, 
-        MdOutlineFileUpload} from 'react-icons/md'
+        MdOutlineFileUpload,
+        MdOutlineStorefront,
+        MdOutlineHourglassTop} from 'react-icons/md'
+import { getMySellerRequest } from '../../../api/sellerRequest'        
 
         
 // readable labels for the firebase provider ids
@@ -30,7 +34,7 @@ const formatDate = (value) => {
 }
 
 export default function Profile() {
-  const { user, loading, updateUserProfile, syncUser } = useContext(AuthContext)
+  const { user, role, loading, updateUserProfile, syncUser } = useContext(AuthContext)
 
   const [isEditing, setIsEditing] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -75,6 +79,23 @@ export default function Profile() {
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
   }, [previewUrl])
+
+
+  // a customer's latest seller application, so the card below can show where it
+  // got to. Only customers have one to look up, a seller has already been through it.
+  const [sellerRequest, setSellerRequest] = useState(null)
+
+  useEffect(() => {
+    let active = true
+
+    if (!user || role !== 'customer') return
+
+    getMySellerRequest()
+      .then((found) => { if (active) setSellerRequest(found) })
+      .catch((error) => console.log('Could not read your seller application', error))
+
+    return () => { active = false }
+  }, [user, role])
 
   if (loading) {
     return (
@@ -360,6 +381,115 @@ export default function Profile() {
                       transition hover:bg-orange-600 active:scale-95">
                     Add Details
                   </button>
+                </div>
+              )}
+            </div>
+
+            {/* Selling on MunchXpress, one account is used for both */}
+            <div className="rounded-[20px] bg-white p-6 custom-shadow sm:p-8">
+
+              <h3 className="text-[16px] font-medium leading-5 text-gray-900">
+                Selling on MunchXpress
+              </h3>
+
+              {role === 'seller' ? (
+                <div className="mt-6 flex flex-col items-start gap-4
+                  sm:flex-row sm:items-center sm:justify-between">
+
+                  <div className="flex items-start gap-3">
+                    <MdCheckCircleOutline className="mt-0.5 h-5 w-5 shrink-0 text-orange-700" />
+
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-800">
+                        You're a restaurant partner
+                      </p>
+                      <p className="mt-1 text-[13px] leading-4.75 text-gray-600">
+                        Manage your menu and incoming orders from the dashboard.
+                      </p>
+                    </div>
+                  </div>
+
+                  <Link
+                    to={'/dashboard'}
+                    className="flex h-12 w-full shrink-0 items-center
+                      justify-center rounded-xl border border-orange-200
+                      bg-white px-6 text-sm font-medium text-gray-800
+                      transition-colors duration-200 hover:bg-orange-500
+                      hover:text-white sm:w-auto">
+                    Dashboard
+                  </Link>
+                </div>
+              ) : role === 'admin' ? (
+                <div className="mt-6 flex items-start gap-3">
+                  <MdOutlineStorefront className="mt-0.5 h-5 w-5 shrink-0 text-orange-700" />
+
+                  <p className="text-[13px] leading-4.75 text-gray-600">
+                    You review seller applications rather than send them.
+                  </p>
+                </div>
+              ) : sellerRequest?.status === 'pending' ? (
+                <div className="mt-6 flex items-start gap-3">
+                  <MdOutlineHourglassTop className="mt-0.5 h-5 w-5 shrink-0 text-orange-700" />
+
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-gray-800">
+                      Application under review
+                    </p>
+                    <p className="mt-1 text-[13px] leading-4.75 text-gray-600">
+                      We're looking at {sellerRequest.restaurantName}. You'll keep
+                      ordering as a customer until it's approved.
+                    </p>
+                  </div>
+                </div>
+              ) : sellerRequest?.status === 'rejected' ? (
+                <div className="mt-6 rounded-xl border border-red-200
+                  bg-red-50 px-5 py-5">
+
+                  <div className="flex items-start gap-3">
+                    <MdOutlineCancel className="mt-0.5 h-5 w-5 shrink-0 text-red-600" />
+
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-gray-800">
+                        Your last application wasn't approved
+                      </p>
+                      <p className="mt-1 text-[13px] leading-4.75 text-gray-700">
+                        {sellerRequest.note || 'No reason was given.'}
+                      </p>
+                    </div>
+                  </div>
+
+                  <Link
+                    to={'/become-a-seller'}
+                    className="mt-4 inline-flex h-12 items-center justify-center
+                      rounded-xl bg-orange-500 px-8 text-sm font-semibold
+                      text-white shadow-lg shadow-orange-500/20 transition
+                      hover:bg-orange-600 active:scale-95">
+                    Apply Again
+                  </Link>
+                </div>
+              ) : (
+                <div className="mt-6 rounded-xl border border-orange-200
+                  bg-orange-50 px-5 py-6 text-center">
+
+                  <MdOutlineStorefront className="mx-auto h-7 w-7 text-orange-600" />
+
+                  <p className="mt-2 text-sm font-medium text-gray-800">
+                    Got a kitchen? Sell with us
+                  </p>
+
+                  <p className="mt-1 text-[13px] leading-4.75 text-gray-600">
+                    Apply with this same account. An admin reviews it, and your
+                    restaurant dashboard opens up once it's approved.
+                  </p>
+
+                  <Link
+                    to={'/become-a-seller'}
+                    className="mt-4 inline-flex h-12 items-center justify-center
+                      rounded-xl bg-orange-500 px-8 text-sm font-semibold
+                      text-white shadow-lg shadow-orange-500/20 transition
+                      hover:bg-orange-600 active:scale-95">
+                    Become a Seller
+                  </Link>
                 </div>
               )}
             </div>
