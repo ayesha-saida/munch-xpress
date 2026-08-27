@@ -75,20 +75,36 @@ export default function Users() {
   }, [users])
 
   
-  const visible = useMemo(() => {
-    const term = search.trim().toLowerCase()
+const visible = useMemo(() => {
+  const term = search.trim().toLowerCase()
 
-    return users.filter((account) => {
-      if (roleFilter !== 'all' && account.role !== roleFilter) return false
-      if (!term) return true
+  const filteredUsers = users.filter((account) => {
+    if (roleFilter !== 'all' && account.role !== roleFilter) return false
+    if (!term) return true
 
-      // user searching happens here
-      return (
-        account.email?.toLowerCase().includes(term) ||
-        account.name?.toLowerCase().includes(term)
-      )
-    })
-  }, [users, search, roleFilter])
+    return (
+      account.email?.toLowerCase().includes(term) ||
+      account.name?.toLowerCase().includes(term)
+    )
+  })
+
+  // Always put the currently signed-in user first
+  const currentUserIndex = filteredUsers.findIndex(
+    (account) => account.email === dbUser?.email
+  )
+
+  if (currentUserIndex === -1) {
+    return filteredUsers
+  }
+
+  const currentUser = filteredUsers[currentUserIndex]
+
+  return [
+    currentUser,
+    ...filteredUsers.filter((_, index) => index !== currentUserIndex),
+  ]
+}, [users, search, roleFilter, dbUser?.email])
+
 
   if (loadingUsers) {
     return (

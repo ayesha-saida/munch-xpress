@@ -14,7 +14,9 @@ import { MdVerified, MdOutlineEmail, MdOutlineCalendarMonth,
          MdFingerprint, MdOutlineLocalPhone, MdOutlineLocationOn, 
         MdOutlineFileUpload,
         MdOutlineStorefront,
-        MdOutlineHourglassTop} from 'react-icons/md'
+        MdOutlineHourglassTop,
+        MdOutlineCancel,
+        MdCheckCircleOutline} from 'react-icons/md'
 import { getMySellerRequest } from '../../../api/sellerRequest'        
 
         

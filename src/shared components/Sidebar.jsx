@@ -7,12 +7,12 @@ import {
   LuX,
 } from "react-icons/lu";
 
-import { FaShoppingCart, FaRegQuestionCircle } from "react-icons/fa";
+import { FaUsers, FaShoppingCart, FaRegQuestionCircle } from "react-icons/fa";
 import { IoSettings } from "react-icons/io5";
 import { HiMiniChartBarSquare } from "react-icons/hi2";
 import { RiEBike2Fill } from "react-icons/ri";
 import { CgFileDocument } from "react-icons/cg";
-import { BsBank } from "react-icons/bs";
+import { BsCoin } from "react-icons/bs";
 import { IoStar } from "react-icons/io5";
 import { FaMoneyBills } from "react-icons/fa6";
 
@@ -28,6 +28,12 @@ const menuItems = [
     icon: LuLayoutDashboard,
   },
   {
+    name: "Users role Management",
+    path: "/dashboard/seller-requests",
+    icon: FaUsers,
+    roles: ["admin"],
+  },
+  {
     name: "Orders",
     path: "/dashboard/orders",
     icon: FaShoppingCart,
@@ -36,7 +42,7 @@ const menuItems = [
     name: "Menu Management",
     path: "/dashboard/menu",
     icon: LuUtensilsCrossed,
-    roles: ["admin"],
+    roles: ["seller", "admin"],
   },
   {
     name: "Analytics",
@@ -71,9 +77,10 @@ const menuItems = [
     icon: CgFileDocument,
   },
   {
-    name: "Bank",
-    path: "/dashboard/bank",
-    icon: BsBank,
+    name: "Earnings",
+    path: "/dashboard/total-earnings",
+    icon: BsCoin,
+    roles: ["seller"],
   },
   {
     name: "Help",

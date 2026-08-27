@@ -2,12 +2,17 @@ import { useContext } from 'react'
 import { AuthContext } from '../../context providers/AuthProvider'
 import Loading from '../../shared components/Loading'
 import AdminDashboard from './Admin/AdminDashboard'
+import Restaurant from './Restaurant owners/Restaurant'
 
 export default function DashboardHome() {
   const { role, roleLoading, syncUser } = useContext(AuthContext)
 
   if (roleLoading) {
     return <Loading />
+  }
+
+  if (role === 'seller') {
+    return <Restaurant />
   }
 
   if (role === 'admin') {

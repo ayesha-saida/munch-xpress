@@ -11,11 +11,11 @@ import Discover from "../Pages/Discover";
 import ErrorHandle from "../shared components/ErrorHandle";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Restaurant from "../Pages/Dashboards/Restaurant owners/Restaurant";
-import AdminDashboard from "../Pages/Dashboards/Admin/AdminDashboard";
 import AdminRoute from "./AdminRoute"
 import DashboardHome from "../Pages/Dashboards/DashboadHome";
 import Users from "../Pages/Dashboards/Admin/Users";
 import BecomeSeller from "../Pages/Dashboards/Customers/BecomeSeller";
+import SellerRequests from "../Pages/Dashboards/Admin/SellerRequests";
 
 export const router = createBrowserRouter([
   {
@@ -75,6 +75,10 @@ export const router = createBrowserRouter([
         {
             path: 'users',
             element:  <AdminRoute> <Users /> </AdminRoute>
+        },
+        {
+            path: 'seller-requests',
+            element:  <AdminRoute> <SellerRequests /> </AdminRoute>
         },
       ]
   },
