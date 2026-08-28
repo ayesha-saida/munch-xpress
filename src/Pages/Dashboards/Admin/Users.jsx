@@ -165,12 +165,13 @@ const visible = useMemo(() => {
       </div>
 
       {/* Search and role tabs */}
-      <div className="flex flex-col gap-3 rounded-[20px] bg-white p-4 custom-shadow sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3 rounded-[20px] bg-white p-4 custom-shadow
+       sm:flex-row sm:items-center sm:justify-between">
         <div className="relative sm:max-w-xs sm:flex-1">
           <LuSearch
             size={17}
-            className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400"
-          />
+            className="pointer-events-none absolute left-3.5 
+            top-1/2 -translate-y-1/2 text-gray-400" />
 
           <input
             type="search"
@@ -212,24 +213,24 @@ const visible = useMemo(() => {
       ) : (
         <>
           {/* Table, sm and up */}
-          <div className="hidden overflow-hidden rounded-[20px] bg-white custom-shadow sm:block">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-gray-100 bg-gray-50/70">
-                  <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Name
-                  </th>
-                  <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Email
-                  </th>
-                  <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Role
-                  </th>
-                  <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                    Joined
-                  </th>
-                </tr>
-              </thead>
+        <div className="hidden overflow-hidden rounded-[20px] bg-white custom-shadow sm:block">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="border-b border-gray-100 bg-gray-50/70">
+                <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide
+                       text-gray-500"> Name
+                </th>
+                <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide
+                       text-gray-500"> Email
+                </th>
+                <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide
+                        text-gray-500"> Role
+                </th>
+                <th className="px-5 py-3.5 text-xs font-semibold uppercase tracking-wide
+                        text-gray-500"> Joined
+                </th>
+              </tr>
+            </thead>
 
               <tbody>
                 {visible.map((account) => (

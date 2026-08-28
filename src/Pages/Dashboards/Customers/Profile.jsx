@@ -21,19 +21,19 @@ import { getMySellerRequest } from '../../../api/sellerRequest'
 
         
 // readable labels for the firebase provider ids
-const providerLabels = {
-  'google.com': 'Google',
-  password: 'Email & Password',
-}
+  const providerLabels = {
+    'google.com': 'Google',
+    password: 'Email & Password',
+  }
 
-const formatDate = (value) => {
-  if (!value) return '—'
-  return new Date(value).toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  })
-}
+  const formatDate = (value) => {
+    if (!value) return '—'
+    return new Date(value).toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  }
 
 export default function Profile() {
   const { user, role, loading, updateUserProfile, syncUser } = useContext(AuthContext)
@@ -56,11 +56,10 @@ export default function Profile() {
   const [edited, setEdited] = useState(null)
 
   const profile = edited?.uid === user?.uid
-    ? edited
-    : {
-      displayName: user?.displayName || '',
-      photoURL: user?.photoURL || '',
-    }
+      ? edited: {
+        displayName: user?.displayName || '',
+        photoURL: user?.photoURL || '',
+      }
 
   // phone + address live outside the firebase auth profile, see utils/deliveryDetails
   const [savedDelivery, setSavedDelivery] = useState(null)
@@ -75,8 +74,7 @@ export default function Profile() {
 
   const previewUrl = useMemo(
     () => (photoFile ? URL.createObjectURL(photoFile) : ''),
-    [photoFile]
-  )
+    [photoFile])  
 
   useEffect(() => () => {
     if (previewUrl) URL.revokeObjectURL(previewUrl)
@@ -508,7 +506,8 @@ export default function Profile() {
                   and address are optional and saved for future orders.
                 </p>
 
-                <form onSubmit={handleSubmit(handleUpdateProfile)} noValidate className="mt-6 space-y-4">
+                <form onSubmit={handleSubmit(handleUpdateProfile)}
+                     noValidate className="mt-6 space-y-4">
 
                   {/* Display name */}
                   <div className="space-y-1">

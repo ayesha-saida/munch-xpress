@@ -328,11 +328,9 @@ export default function BecomeSeller() {
                   minLength: { value: 10, message: 'Please give the full address' },
                   maxLength: { value: 300, message: 'Address is too long' },
                 })}
-                rows={3}
-                maxLength={300}
+                rows={3} maxLength={300}
                 placeholder="House, road, area, city"
-                className={textareaClass(errors.address)}
-              />
+                className={textareaClass(errors.address)} /> 
 
               <FieldError error={errors.address} />
 

@@ -93,21 +93,9 @@ const AuthProvider = ({children}) => {
         })
       return () => unSubscribe() }, [syncUser])
 
-          const authInfo = {
-               registerUser,
-                 loginUser,
-              updateUserProfile,
-                  logOut ,    
-             signInWithGoogle, 
-          resetPasswordWithEmail, 
-                   user,
-                 loading,
-                 dbUser,
-                 role: dbUser?.role || null,
-               roleLoading,
-                 syncUser
-             }
-
+          const authInfo = { registerUser, loginUser, updateUserProfile, logOut,
+             signInWithGoogle, resetPasswordWithEmail, user, loading, dbUser,
+              role: dbUser?.role || null, roleLoading, syncUser }
 
   return (
     <AuthContext value={authInfo}>

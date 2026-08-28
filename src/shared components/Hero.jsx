@@ -17,7 +17,8 @@ export default function Hero() {
       <div className="absolute inset-0 bg-white/55"></div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-64px)] w-full max-w-7xl items-center px-5 py-10 sm:px-8 md:px-10 lg:px-12">
+      <div className="relative z-10 mx-auto flex min-h-[calc(100svh-64px)] 
+      w-full max-w-7xl items-center px-5 py-10 sm:px-8 md:px-10 lg:px-12">
 
         <div className="w-full max-w-162.5">
 
@@ -48,16 +49,8 @@ export default function Hero() {
 
               {/* Search input */}
               <label
-                className="
-                  flex
-                  h-14
-                  min-w-0
-                  flex-1
-                  items-center
-                  gap-3
-                  rounded-xl
-                  px-3
-                  text-gray-500 sm:px-4">
+                className="flex h-14 min-w-0 flex-1 items-center gap-3 
+                rounded-xl px-3 text-gray-500 sm:px-4">
                 <IoMdSearch
                   className="h-6 w-6 shrink-0
                    text-orange-700" />
@@ -65,38 +58,17 @@ export default function Hero() {
                 <input
                   type="search"
                   placeholder="Find what you desire"
-                  className="
-                    min-w-0
-                    w-full
-                    bg-transparent
-                    text-sm
-                    text-gray-800
-                    outline-none
-
-                    sm:text-base "/>
+                  className="min-w-0 w-full bg-transparent text-sm
+                  text-gray-800 outline-none sm:text-base "/>
 
               </label>
 
               {/* Explore button */}
               <button
                 type="button"
-                className="
-                  h-14
-                  w-full
-                  shrink-0
-                  rounded-xl
-                  bg-orange-700
-                  px-8
-                  font-semibold
-                  text-white
-                  transition
-                  hover:bg-orange-800
-
-                  sm:w-auto
-                  sm:px-10
-                "
-              >
-                Explore
+                className="h-14 w-full shrink-0 rounded-xl bg-orange-700
+                  px-8 font-semibold text-white transition hover:bg-orange-800
+                  sm:w-auto sm:px-10">   Explore
               </button>
 
             </div>
@@ -109,28 +81,3 @@ export default function Hero() {
     </section>
   )
 }
-
-{/*
-  <div className="hero bg-base-300 min-h-screen ">
-  <div className="hero-content flex-col lg:flex-row-reverse">
-    <img
-      alt="Tailwind CSS hero component"
-      src={backgroundImage}
-      className="max-w-sm rounded-lg shadow-2xl"
-    />
-    <div>
-      <h1 className="text-5xl font-bold">Craving something delicious?</h1>
-      <p className="py-6 text-2xl">
-            Order from your favorite local restaurants and get it delivered fast with MunchXpress.
-      </p>
-
-{/*search for food/}
-  <label className="input">
-      <IoMdSearch className='h-7 w-7' />
-    <input type="search" required placeholder="Find what you desire" />
-  </label>
-
-     </div>
-    
-  </div>
-</div> */}

@@ -28,7 +28,8 @@ export default function TrendingCuisines() {
      <section className="mx-auto w-[calc(100%-72px)] max-w-240 py-6 font-sans">
       
       {/* Header */}
-      <div className="mb-6 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-6 flex flex-col gap-3 sm:mb-8 
+            sm:flex-row sm:items-start sm:justify-between">
         <div>
           <h2 className="text-2xl font-medium tracking-[-0.4px] text-gray-900 sm:text-3xl">
             Trending Cuisines
@@ -41,8 +42,8 @@ export default function TrendingCuisines() {
 
         <button
           type="button"
-          className="w-fit border-0 bg-transparent p-0 text-sm text-orange-600 hover:underline sm:pt-1 sm:text-lg"
-        >
+          className="w-fit border-0 bg-transparent p-0 text-sm
+           text-orange-600 hover:underline sm:pt-1 sm:text-lg">        
           View all categories
         </button>
       </div>
@@ -55,12 +56,13 @@ export default function TrendingCuisines() {
           <img
             src={cuisines[0].image}
             alt="Sushi"
-            className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-          />
+            className="h-full w-full object-cover transition-transform
+             duration-300 hover:scale-105" />
 
           <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
 
-          <div className="absolute bottom-5 left-5 flex items-center gap-3 rounded-[13px] bg-white/90 px-4.5 py-2.5 shadow-md backdrop-blur-md">
+          <div className="absolute bottom-5 left-5 flex items-center
+           gap-3 rounded-[13px] bg-white/90 px-4.5 py-2.5 shadow-md backdrop-blur-md">
             <span className="text-orange-700">
               {cuisines[0].icon}
             </span>
@@ -81,12 +83,13 @@ export default function TrendingCuisines() {
             <img
               src={cuisines[1].image}
               alt="Italian Gourmet"
-              className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-            />
+              className="h-full w-full object-cover transition-transform
+               duration-300 hover:scale-105" />
 
             <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
 
-            <div className="absolute bottom-3.25 left-3.5 flex items-center gap-2 rounded-xl bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
+            <div className="absolute bottom-3.25 left-3.5 flex items-center gap-2
+             rounded-xl bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
               <span className="text-orange-700">
                 {cuisines[1].icon}
               </span>
@@ -105,12 +108,13 @@ export default function TrendingCuisines() {
               <img
                 src={cuisines[2].image}
                 alt="Craft Burgers"
-                className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
-              />
+                className="h-full w-full object-cover transition-transform
+                 duration-300 hover:scale-105" />
 
               <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
 
-              <div className="absolute bottom-3.25 left-3.25 rounded-xl bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
+              <div className="absolute bottom-3.25 left-3.25 rounded-xl
+                   bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
                 <p className="text-sm font-medium text-gray-700">
                   Craft Burgers
                 </p>
@@ -122,12 +126,14 @@ export default function TrendingCuisines() {
               <img
                 src={cuisines[3].image}
                 alt="Artisan Salads"
-                className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                className="h-full w-full object-cover transition-transform
+                   duration-300 hover:scale-105"
               />
 
               <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
 
-              <div className="absolute bottom-3.25 left-3.25 rounded-xl bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
+              <div className="absolute bottom-3.25 left-3.25 rounded-xl
+                   bg-white/90 px-3.5 py-2 shadow-md backdrop-blur-md">
                 <p className="text-sm font-medium text-gray-700">
                   Artisan Salads
                 </p>
