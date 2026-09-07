@@ -16,7 +16,7 @@ import { BsCoin } from "react-icons/bs";
 import { IoStar } from "react-icons/io5";
 import { FaMoneyBills } from "react-icons/fa6";
 
-import { NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import userIcon from '../assets/user-icon.png'
 import { AuthContext } from "../context providers/AuthProvider";
 import { successToast, errorToast } from "./ToastContainer";
@@ -137,7 +137,7 @@ export default function Sidebar() {
           ${isOpen ? "translate-x-0" : "-translate-x-full"} `}>
         {/* Logo */}
         <div className="flex h-20 items-center justify-between
-                        border-b border-gray-100 px-6">
+               border-b border-gray-100 px-6">
 
           <div>
             <NavLink to={'/'} className="text-2xl font-extrabold text-orange-800">
@@ -165,30 +165,13 @@ export default function Sidebar() {
                   to={item.path}
                   end={item.path === "/dashboard"}
                   onClick={() => setIsOpen(false)}
-                  className={({ isActive }) => `
-                    flex
-                    items-center
-                    gap-3
-                    rounded-lg
-                    px-4
-                    py-3
-                    text-sm
-                    font-medium
-                    transition-all
+                  className={({ isActive }) => `flex items-center gap-3 rounded-lg
+                    px-4 py-3 text-sm font-medium transition-all
 
                     ${
                       isActive
-                        ? `
-                          bg-orange-50
-                          text-orange-800
-                          border-r-4
-                          border-orange-800
-                        `
-                        : `
-                          text-gray-600
-                          hover:bg-gray-50
-                          hover:text-orange-900
-                        `
+                        ? `bg-orange-50 text-orange-800 border-r-4 border-orange-800 `
+                        : `text-gray-600 hover:bg-gray-50 hover:text-orange-900 `
                     }
                   `}
                 >
@@ -203,7 +186,9 @@ export default function Sidebar() {
 
         {/* User section */}
         <div className="border-t border-gray-100 p-4">
-          <div className="mb-4 flex items-center gap-3">
+          <Link to={'/profile'} className="mb-4 flex items-center gap-3 rounded-lg 
+             p-2 -mx-2 transition hover:bg-gray-50"> 
+         
             <img
               src={user?.photoURL || userIcon}
               alt={user?.displayName || 'User'}
@@ -217,30 +202,18 @@ export default function Sidebar() {
 
               {/* role is null for a frame while syncUser is in flight */}
               <p className="text-xs capitalize text-gray-500">
-                {role || ' '}
+                {role || '\u00A0'}
               </p>
             </div>
-          </div>
+         </Link>
 
           {/* Logout */}
           <button
             type="button"
             onClick={handleLogOut}
-            className="
-              flex
-              w-full
-              items-center
-              gap-3
-              rounded-lg
-              px-4
-              py-3
-              text-sm
-              font-medium
-              text-red-500
-              transition
-              hover:bg-red-50
-            "
-          >
+            className="flex w-full items-center gap-3 rounded-lg px-4 py-3 
+             text-sm font-medium text-red-500 transition hover:bg-red-50">
+          
             <LuLogOut size={20} />
             <span>Logout</span>
           </button>
