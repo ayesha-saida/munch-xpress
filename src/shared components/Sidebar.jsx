@@ -40,9 +40,9 @@ const menuItems = [
   },
   {
     name: "Menu Management",
-    path: "/dashboard/menu",
+    path: "/dashboard/all-menu",
     icon: LuUtensilsCrossed,
-    roles: ["seller", "admin"],
+    roles: ["seller"],
   },
   {
     name: "Analytics",

@@ -51,10 +51,6 @@ export default function RegisterForm() {
       displayName: name
     })
 
-  /* The user record already exists because authentication triggered its creation,
-     but the name wasn't available at that moment.
-     Now that we have the name, update the existing database record with it. */
-
     await syncUser()
 
    successToast('Registration Successfull 🎉')

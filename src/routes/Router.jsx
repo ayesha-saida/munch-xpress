@@ -16,6 +16,8 @@ import DashboardHome from "../Pages/Dashboards/DashboadHome";
 import Users from "../Pages/Dashboards/Admin/Users";
 import BecomeSeller from "../Pages/Dashboards/Customers/BecomeSeller";
 import SellerRequests from "../Pages/Dashboards/Admin/SellerRequests";
+import SellerRoute from "./SellerRoute";
+import MenuManagement from "../Pages/Dashboards/Restaurant owners/MenuManagement";
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +81,10 @@ export const router = createBrowserRouter([
         {
             path: 'seller-requests',
             element:  <AdminRoute> <SellerRequests /> </AdminRoute>
+        },
+        {
+            path: 'all-menu',
+            element:  <SellerRoute> <MenuManagement /> </SellerRoute>
         },
       ]
   },

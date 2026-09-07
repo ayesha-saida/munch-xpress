@@ -14,7 +14,6 @@ const AuthProvider = ({children}) => {
       const [user, setUser] = useState(null)
       const [loading, setLoading] = useState(true)
 
-  // the mongo account document, which is where the role lives
       const [dbUser, setDbUser] = useState(null)
       const [roleLoading, setRoleLoading] = useState(true)
 
@@ -51,7 +50,7 @@ const AuthProvider = ({children}) => {
     /* Whenever a user signs in or updates their profile, 
        sync their Firebase information to MongoDB, 
        let the server create/update their account, 
-       and get their role from the server rather than trusting the client to provide it. */
+       and get their role from the server. */
 
     const syncUser = useCallback(async (firebaseUser = auth.currentUser) => {
       if (!firebaseUser) {
@@ -72,8 +71,8 @@ const AuthProvider = ({children}) => {
         return data.user
       } catch (error) {
 
-        /* signed in with firebase but the server did not answer, so treat the
-           account as having no role rather than assuming one */
+        /* signed in with firebase but the server did not answer,
+         so treat the account as having no role */
 
         console.log('Could not sync your account with the server', error)
         setDbUser(null)
