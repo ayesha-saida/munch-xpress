@@ -5,9 +5,12 @@ import { FaRegUserCircle } from 'react-icons/fa'
 import { IoCartOutline } from 'react-icons/io5'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import SignOut from './SignOut'
+import { CartContext } from '../context providers/CartProvider'
+
 
 export default function Navbar() {
     const {user, role} = useContext(AuthContext) 
+    const { itemCount, cartLoading } = useContext(CartContext)
 
     const links = ( <>    
      <li> <NavLink to={'/'} className="hover:text-orange-600 hover:underline"> Home </NavLink> </li>
@@ -37,18 +40,19 @@ export default function Navbar() {
    <div className="navbar-end sm:space-x-3 space-x-0">
  
   {user && <div>
-    <div className="dropdown dropdown-end">
-          <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-            <div className="indicator">
-                <IoCartOutline className='h-5 w-5 sm:h-7 sm:w-7 text-orange-700' />
-              {/* <span className="badge badge-sm indicator-item text-orange-600"> 0 </span> */}
-            </div>
-          </div>
-          <div
-            tabIndex={0}
-            className="card card-sm dropdown-content bg-base-100 z-1 mt-3 w-52 shadow">
-          </div>
+    <Link to={'/cart'} aria-label={itemCount > 0 ? `Cart, ${itemCount} items` : 'Cart'}
+       className="btn btn-ghost btn-circle">
+      <div className="indicator">
+        <IoCartOutline className='h-5 w-5 sm:h-7 sm:w-7 text-orange-700' />
+
+        {/* hidden on the first load rather than flashing a 0 that then jumps */}
+        {!cartLoading && itemCount > 0 && (
+          <span className="badge badge-xs sm:badge-sm indicator-item bg-orange-600 text-white border-none">
+            {itemCount}
+          </span>
+        )}
       </div>
+    </Link>
 
     <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">

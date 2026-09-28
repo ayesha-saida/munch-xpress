@@ -1,12 +1,14 @@
 import { useContext } from 'react'
 import { LuUtensilsCrossed } from 'react-icons/lu'
 import { formatPrice } from '../utils/menuCategories'
+import { CartContext } from '../context providers/CartProvider'
 
 export default function DishCard({ item }) {
-  const addToCart = (e) => {
-    const itemName = e.name
-    console.log(itemName, 'added to cart')
-  }
+  const { addToCart, busyId, isInCart } = useContext(CartContext)
+
+  const id = String(item._id)
+  const busy = busyId === id
+  const alreadyIn = isInCart(id)
 
   return (
     <div className="card bg-base-100 shadow-sm transition hover:shadow-md">
@@ -45,9 +47,12 @@ export default function DishCard({ item }) {
           <button
             type="button"
             className="btn btn-primary btn-sm"
+            disabled={busy}
             onClick={() => addToCart(item)}
           >
-             Add to Cart   
+            {busy
+              ? <span className="loading loading-spinner loading-xs" />
+              : alreadyIn ? 'Add another' : 'Add to cart'}
           </button>
           
         </div>

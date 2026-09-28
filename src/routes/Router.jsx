@@ -10,7 +10,6 @@ import Profile from "../Pages/Dashboards/Customers/Profile";
 import Discover from "../Pages/Discover";
 import ErrorHandle from "../shared components/ErrorHandle";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Restaurant from "../Pages/Dashboards/Restaurant owners/Restaurant";
 import AdminRoute from "./AdminRoute"
 import DashboardHome from "../Pages/Dashboards/DashboadHome";
 import Users from "../Pages/Dashboards/Admin/Users";
@@ -18,6 +17,7 @@ import BecomeSeller from "../Pages/Dashboards/Customers/BecomeSeller";
 import SellerRequests from "../Pages/Dashboards/Admin/SellerRequests";
 import SellerRoute from "./SellerRoute";
 import MenuManagement from "../Pages/Dashboards/Restaurant owners/MenuManagement";
+import Cart from "../shared components/Cart";
 
 export const router = createBrowserRouter([
   {
@@ -40,6 +40,10 @@ export const router = createBrowserRouter([
         {
             path: '/discover',
             element: <Discover />
+        },
+        {
+            path: '/cart',
+            element: <PrivateRoute> <Cart /> </PrivateRoute>
         },
       ]
   },
