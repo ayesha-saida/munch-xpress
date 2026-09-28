@@ -1,10 +1,11 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { LuSearch, LuRefreshCw } from 'react-icons/lu'
 import { AuthContext } from '../../../context providers/AuthProvider'
-import { getUsers } from '../../../api/users.js'
+import { getUsers, updateUserRole } from '../../../api/users.js'
 import { apiErrorMessage } from '../../../api/axiosSecure.js'
 import Loading from '../../../shared components/Loading'
 import userIcon from '../../../assets/user-icon.png'
+import { successToast, errorToast } from '../../../shared components/ToastContainer.jsx'
 
 const ROLES = ['customer', 'seller', 'admin']
 
@@ -35,13 +36,14 @@ export default function Users() {
   const [search, setSearch] = useState('')
   const [roleFilter, setRoleFilter] = useState('all')
 
-  /* bumping this refetches, works as retry and refresh button */
+  const [updatingRoleId, setUpdatingRoleId] = useState(null)
+
   const [reloadKey, setReloadKey] = useState(0)
   const [loadedKey, setLoadedKey] = useState(-1)
 
   const loadingUsers = loadedKey !== reloadKey
 
-  // used to fetch users from the backend
+  // Fetch users from the backend
   useEffect(() => {
     let active = true
 
@@ -61,6 +63,71 @@ export default function Users() {
 
     return () => { active = false }
   }, [reloadKey])
+
+  
+  /* Update a user's role immediately */
+const handleRoleChange = async (id, role) => {
+  if (!id || !ROLES.includes(role)) return
+
+  const account = users.find(
+    (user) => user._id === id
+  )
+
+  if (!account) return
+
+  // Prevent an admin from changing their own role
+  if (account.email === dbUser?.email) {
+    errorToast('You cannot change your own role.')
+    return
+  }
+
+  const previousRole = account.role
+
+  // Optimistically update the UI
+  setUsers((current) =>
+    current.map((user) =>
+      user._id === id
+        ? { ...user, role }
+        : user
+    )
+  )
+
+  setUpdatingRoleId(id)
+
+  try {
+    const result = await updateUserRole(id, role)
+
+    // Use the role returned by the backend
+    setUsers((current) =>
+      current.map((user) =>
+        user._id === id
+          ? {
+              ...user,
+              ...(result.user || {}),
+              role: result.user?.role || role,
+            }
+          : user
+      )
+    )
+
+    successToast('User role updated successfully.')
+  } catch (err) {
+    // Roll back optimistic update
+    setUsers((current) =>
+      current.map((user) =>
+        user._id === id
+          ? { ...user, role: previousRole }
+          : user
+      )
+    )
+
+    errorToast(
+      apiErrorMessage(err, 'Could not update user role')
+    )
+  } finally {
+    setUpdatingRoleId(null)
+  }
+}
 
 
   /* counts come off the unfiltered list so the tabs keep their totals */
@@ -233,93 +300,195 @@ const visible = useMemo(() => {
             </thead>
 
               <tbody>
-                {visible.map((account) => (
-                  <tr
-                    key={account._id || account.email}
-                    className="border-b border-gray-50 last:border-0 hover:bg-orange-50/40">
+                {visible.map((account) => {
+                  const isCurrentUser =
+                    account.email === dbUser?.email
 
-                    <td className="px-5 py-4">
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={account.photoURL || userIcon}
-                          alt=""
-                          className="h-9 w-9 shrink-0 rounded-full object-cover"
-                        />
+                  const isUpdating =
+                    updatingRoleId === account._id
 
-                        <span className="text-sm font-medium text-gray-800">
-                          {account.name || 'No name set'}
+                  return (
+                    <tr
+                      key={account._id || account.email}
+                      className="border-b border-gray-50 last:border-0 hover:bg-orange-50/40"
+                    >
+                      <td className="px-5 py-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={account.photoURL || userIcon}
+                            alt=""
+                            className="h-9 w-9 shrink-0 rounded-full object-cover"
+                          />
 
-                          {/* so an admin can tell which row is their own */}
-                          {account.email === dbUser?.email && (
-                            <span className="ml-2 text-xs font-normal text-gray-400">
-                              you
-                            </span>
-                          )}
-                        </span>
-                      </div>
-                    </td>
+                          <span className="text-sm font-medium text-gray-800">
+                            {account.name || 'No name set'}
 
-                    <td className="px-5 py-4 text-sm text-gray-600">
-                      {account.email}
-                    </td>
+                            {isCurrentUser && (
+                              <span className="ml-2 text-xs font-normal text-gray-400">
+                                you
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      </td>
 
-                    <td className="px-5 py-4">
-                      <span
-                        className={`inline-flex rounded-full px-2.5 py-1 text-xs
-                          font-semibold capitalize ${
-                            roleBadge[account.role] || 'bg-gray-100 text-gray-700'
-                          }`}>
-                        {account.role || 'unknown'}
-                      </span>
-                    </td>
+                      <td className="px-5 py-4 text-sm text-gray-600">
+                        {account.email}
+                      </td>
 
-                    <td className="px-5 py-4 text-sm text-gray-600">
-                      {joinedOn(account.createdAt)}
-                    </td>
-                  </tr>
-                ))}
+                      <td className="px-5 py-4">
+                        {isCurrentUser ? (
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-1 text-xs
+                              font-semibold capitalize ${
+                                roleBadge[account.role] ||
+                                'bg-gray-100 text-gray-700'
+                              }`}
+                          >
+                            {account.role || 'unknown'}
+                          </span>
+                        ) : (
+                          <div className="relative inline-flex">
+                            <select
+                              value={account.role || ''}
+                              disabled={isUpdating}
+                              onChange={(e) =>
+                                handleRoleChange(
+                                  account._id,
+                                  e.target.value
+                                )
+                              }
+                              aria-label={`Change role for ${account.name || account.email}`}
+                              className={`rounded-lg border px-2.5 py-1.5
+                                text-xs font-semibold capitalize outline-none
+                                transition focus:border-orange-400
+                                ${
+                                  roleBadge[account.role] ||
+                                  'border-gray-200 bg-gray-100 text-gray-700'
+                                }
+                                ${
+                                  isUpdating
+                                    ? 'cursor-wait opacity-60'
+                                    : 'cursor-pointer'
+                                }`}
+                            >
+                              {ROLES.map((role) => (
+                                <option
+                                  key={role}
+                                  value={role}
+                                >
+                                  {role}
+                                </option>
+                              ))}
+                            </select>
+
+                            {isUpdating && (
+                              <span className="pointer-events-none absolute right-2 top-1/2
+                                h-3 w-3 -translate-y-1/2 animate-spin rounded-full
+                                border-2 border-gray-300 border-t-orange-500"
+                              />
+                            )}
+                          </div>
+                        )}
+                      </td>
+
+                      <td className="px-5 py-4 text-sm text-gray-600">
+                        {joinedOn(account.createdAt)}
+                      </td>
+                    </tr>
+                  )
+                })}
               </tbody>
             </table>
           </div>
 
           {/* Cards, below sm is a four column table does not fit a phone */}
           <div className="space-y-3 sm:hidden">
-            {visible.map((account) => (
-              <div
-                key={account._id || account.email}
-                className="rounded-[20px] bg-white p-4 custom-shadow">
+            {visible.map((account) => {
+              const isCurrentUser =
+                account.email === dbUser?.email
 
-                <div className="flex items-center gap-3">
-                  <img
-                    src={account.photoURL || userIcon}
-                    alt=""
-                    className="h-11 w-11 shrink-0 rounded-full object-cover"
-                  />
+              const isUpdating =
+                updatingRoleId === account._id
 
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-800">
-                      {account.name || 'No name set'}
-                    </p>
+              return (
+                <div
+                  key={account._id || account.email}
+                  className="rounded-[20px] bg-white p-4 custom-shadow"
+                >
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={account.photoURL || userIcon}
+                      alt=""
+                      className="h-11 w-11 shrink-0 rounded-full object-cover"
+                    />
 
-                    <p className="truncate text-xs text-gray-500">
-                      {account.email}
-                    </p>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-800">
+                        {account.name || 'No name set'}
+
+                        {isCurrentUser && (
+                          <span className="ml-2 text-xs font-normal text-gray-400">
+                            you
+                          </span>
+                        )}
+                      </p>
+
+                      <p className="truncate text-xs text-gray-500">
+                        {account.email}
+                      </p>
+                    </div>
+
+                    {isCurrentUser ? (
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-1 text-xs
+                          font-semibold capitalize ${
+                            roleBadge[account.role] ||
+                            'bg-gray-100 text-gray-700'
+                          }`}
+                      >
+                        {account.role || 'unknown'}
+                      </span>
+                    ) : (
+                      <select
+                        value={account.role || ''}
+                        disabled={isUpdating}
+                        onChange={(e) =>
+                          handleRoleChange(
+                            account._id,
+                            e.target.value
+                          )
+                        }
+                        aria-label={`Change role for ${account.name || account.email}`}
+                        className={`shrink-0 rounded-lg border px-2 py-1.5
+                          text-xs font-semibold capitalize outline-none
+                          focus:border-orange-400 ${
+                            roleBadge[account.role] ||
+                            'border-gray-200 bg-gray-100 text-gray-700'
+                          } ${
+                            isUpdating
+                              ? 'cursor-wait opacity-60'
+                              : 'cursor-pointer'
+                          }`}
+                      >
+                        {ROLES.map((role) => (
+                          <option
+                            key={role}
+                            value={role}
+                          >
+                            {role}
+                          </option>
+                        ))}
+                      </select>
+                    )}
                   </div>
 
-                  <span
-                    className={`shrink-0 rounded-full px-2.5 py-1 text-xs
-                      font-semibold capitalize ${
-                        roleBadge[account.role] || 'bg-gray-100 text-gray-700'
-                      }`}>
-                    {account.role || 'unknown'}
-                  </span>
+                  <p className="mt-3 border-t border-gray-50 pt-3 text-xs text-gray-500">
+                    Joined {joinedOn(account.createdAt)}
+                  </p>
                 </div>
-
-                <p className="mt-3 border-t border-gray-50 pt-3 text-xs text-gray-500">
-                  Joined {joinedOn(account.createdAt)}
-                </p>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </>
       )}

@@ -10,3 +10,11 @@ export const getUserByEmail = async (email) => {
   const { data } = await axiosSecure.get(`/users/${email}`)
   return data
 }
+
+/* admin only, updates a user's role */
+export const updateUserRole = async (id, role) => {
+  const { data } = await axiosSecure.patch(`/users/${id}/role`, {
+    role,
+  })
+  return data
+}
