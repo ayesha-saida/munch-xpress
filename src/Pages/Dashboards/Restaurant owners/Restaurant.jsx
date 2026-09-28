@@ -121,7 +121,7 @@ export default function Restaurant() {
           </div>
 
           <Link
-            to="/dashboard/menu"
+            to="/dashboard/all-menu"
             className="inline-flex h-11 shrink-0 items-center gap-2 rounded-xl
               bg-orange-500 px-4 text-sm font-semibold text-white transition
               hover:bg-orange-600 active:scale-95">
@@ -168,7 +168,7 @@ export default function Restaurant() {
 
           {counts.live > previewCount && (
             <Link
-              to="/dashboard/menu"
+              to="/dashboard/all-menu"
               className="text-[13px] font-semibold text-orange-700 hover:underline">
               See all {counts.live}
             </Link>
@@ -186,7 +186,7 @@ export default function Restaurant() {
             </p>
 
             <Link
-              to="/dashboard/menu"
+              to="/dashboard/all-menu"
               className="mt-5 inline-flex h-12 items-center justify-center gap-2
                 rounded-xl bg-orange-500 px-8 text-sm font-semibold text-white
                 transition hover:bg-orange-600 active:scale-95">

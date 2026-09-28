@@ -77,6 +77,13 @@ export default function Navbar() {
              className="justify-between text-sm hover:underline hover:text-orange-500">                          
                       Profile   </Link> </li> 
 
+
+           {role === 'customer' && (
+              <li> <Link to={'/dashboard/my-orders'}
+                className="justify-between text-sm hover:underline hover:text-orange-500">
+                      My orders </Link> </li>
+            )}                    
+
             <li> <SignOut/>  </li>
           </ul>
       </div> 

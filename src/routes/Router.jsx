@@ -21,6 +21,9 @@ import Cart from "../shared components/Cart";
 import Checkout from "../Pages/Checkout/Checkout";
 import MockPay from "../Pages/Checkout/MockPay";
 import PaymentResult from "../Pages/Checkout/Paymentresult";
+import MyOrders from "../Pages/Dashboards/Customers/MyOrders";
+import Orders from "../Pages/Dashboards/Orders/Orders";
+import Transactions from "../Pages/Dashboards/Admin/Transactions";
 
 export const router = createBrowserRouter([
   {
@@ -100,6 +103,18 @@ export const router = createBrowserRouter([
         {
             path: 'all-menu',
             element:  <SellerRoute> <MenuManagement /> </SellerRoute>
+        },
+        {
+            path: 'my-orders',
+            element: <PrivateRoute> <MyOrders /> </PrivateRoute>
+        },
+        {
+            path: 'orders',
+            element:  <SellerRoute> <Orders /> </SellerRoute>
+        },
+        {
+            path: 'transactions',
+            element:  <AdminRoute> <Transactions /> </AdminRoute>
         },
       ]
   },

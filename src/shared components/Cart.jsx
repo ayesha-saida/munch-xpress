@@ -30,16 +30,20 @@ export default function Cart() {
   }
 
   return (
-    <section className="mx-auto max-w-4xl px-4 py-10">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">
-          Your cart <span className="text-base font-normal opacity-60">({itemCount})</span>
+  <section className="min-h-screen bg-gray-100 px-3 py-4 sm:px-6 sm:py-8">
+    <div className="mx-auto max-w-4xl rounded-xl bg-gray-200 p-4 sm:p-6 md:p-8">
+      <div className="flex items-center justify-between gap-3">
+        <h1 className="text-2xl font-bold sm:text-3xl">
+          Your cart{" "}
+          <span className="text-base font-normal opacity-60">
+            ({itemCount})
+          </span>
         </h1>
 
         <button
           type="button"
           className="btn btn-ghost btn-sm"
-          disabled={busyId === 'all'}
+          disabled={busyId === "all"}
           onClick={clearCart}
         >
           Empty cart
@@ -52,22 +56,30 @@ export default function Cart() {
           const busy = busyId === id
 
           return (
-            <div key={id} className="flex items-center gap-4 py-4">
+            <div
+              key={id}
+              className="
+                flex flex-wrap items-center gap-3 py-4
+                sm:flex-nowrap sm:gap-4
+              "
+            >
               <img
                 src={line.imageURL}
                 alt={line.name}
-                className="size-16 shrink-0 rounded object-cover"
+                className="size-14 shrink-0 rounded object-cover sm:size-16"
               />
 
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{line.name}</p>
-                <p className="text-sm opacity-70">{line.restaurantName}</p>
-                <p className="text-sm opacity-60">{formatPrice(line.price)} each</p>
+                <p className="text-sm opacity-70">
+                  {line.restaurantName}
+                </p>
+                <p className="text-sm opacity-60">
+                  {formatPrice(line.price)} each
+                </p>
               </div>
 
-              {/* stepping down from 1 sends 0, which the server treats as a
-                  removal */}
-              <div className="join">
+              <div className="join order-3 sm:order-none">
                 <button
                   type="button"
                   className="btn btn-sm join-item"
@@ -76,9 +88,11 @@ export default function Cart() {
                 >
                   −
                 </button>
+
                 <span className="btn btn-sm join-item no-animation pointer-events-none">
-                   {line.quantity}
+                  {line.quantity}
                 </span>
+
                 <button
                   type="button"
                   className="btn btn-sm join-item"
@@ -89,7 +103,7 @@ export default function Cart() {
                 </button>
               </div>
 
-              <span className="w-24 text-right font-semibold">
+              <span className="ml-auto w-auto text-right font-semibold sm:w-24">
                 {formatPrice(line.lineTotal)}
               </span>
 
@@ -106,15 +120,24 @@ export default function Cart() {
         })}
       </div>
 
-      <div className="mt-8 flex items-center justify-between rounded-lg bg-base-200 p-5">
+      <div className="mt-8 flex flex-col gap-4 rounded-lg bg-base-200 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div>
           <p className="text-sm opacity-70">Subtotal</p>
-          <p className="text-2xl font-bold">{formatPrice(subtotal)}</p>
+          <p className="text-2xl font-bold">
+            {formatPrice(subtotal)}
+          </p>
         </div>
 
-        <button type="button" className="btn btn-primary"
-          onClick={() => navigate('/checkout')}>Checkout</button>
+        <button
+          type="button"
+          className="btn btn-primary w-full sm:w-auto"
+          onClick={() => navigate("/checkout")}
+        >
+          Checkout
+        </button>
       </div>
-    </section>
-  )
+    </div>
+  </section>
+)
+
 }

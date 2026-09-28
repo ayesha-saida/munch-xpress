@@ -24,9 +24,6 @@ export default function AdminDashboard() {
           Admin Dashboard
         </h2>
 
-        <p className="mt-1 text-[13px] leading-4.75 text-gray-600">
-          The seller application queue and platform overview will live here.
-        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

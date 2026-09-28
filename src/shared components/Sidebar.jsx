@@ -7,36 +7,44 @@ import {
   LuX,
 } from "react-icons/lu";
 
-import { FaUsers, FaShoppingCart, FaRegQuestionCircle } from "react-icons/fa";
-import { IoSettings } from "react-icons/io5";
-import { HiMiniChartBarSquare } from "react-icons/hi2";
-import { RiEBike2Fill } from "react-icons/ri";
-import { CgFileDocument } from "react-icons/cg";
+import { FaUsers, FaShoppingCart } from "react-icons/fa";
 import { BsCoin } from "react-icons/bs";
-import { IoStar } from "react-icons/io5";
 import { FaMoneyBills } from "react-icons/fa6";
-
 import { Link, NavLink, useNavigate } from "react-router";
 import userIcon from '../assets/user-icon.png'
 import { AuthContext } from "../context providers/AuthProvider";
 import { successToast, errorToast } from "./ToastContainer";
+import { MdOutlinePersonAddAlt1 } from "react-icons/md";
  
 const menuItems = [
   {
     name: "Overview",
     path: "/dashboard",
     icon: LuLayoutDashboard,
+    roles: ["admin","seller"],
   },
   {
-    name: "Users role Management",
+    name: "Seller Request",
     path: "/dashboard/seller-requests",
+    icon: MdOutlinePersonAddAlt1,
+    roles: ["admin"],
+  },
+  {
+    name: "Users Management",
+    path: "/dashboard/users",
     icon: FaUsers,
     roles: ["admin"],
   },
   {
-    name: "Orders",
+    name: "My Orders",
+    path: "/dashboard/my-orders",
+    icon: FaShoppingCart,
+  },
+  {
+    name: "All Orders",
     path: "/dashboard/orders",
     icon: FaShoppingCart,
+    roles: ["admin","seller"],
   },
   {
     name: "Menu Management",
@@ -45,48 +53,17 @@ const menuItems = [
     roles: ["seller"],
   },
   {
-    name: "Analytics",
-    path: "/dashboard/analytics",
-    icon: HiMiniChartBarSquare,
-    roles: ["admin"],
-  },
-  {
-    name: "Delivery",
-    path: "/dashboard/delivery",
-    icon: RiEBike2Fill,
-    roles: ["admin"],
-  },
-  {
-    name: "Settings",
-    path: "/dashboard/settings",
-    icon: IoSettings,
-  },
-  {
-    name: "Reviews",
-    path: "/dashboard/reviews",
-    icon: IoStar,
-  },
-  {
     name: "Transactions",
     path: "/dashboard/transactions",
     icon: FaMoneyBills,
-  },
-  {
-    name: "Documents",
-    path: "/dashboard/documents",
-    icon: CgFileDocument,
+    roles: ["admin"],
   },
   {
     name: "Earnings",
     path: "/dashboard/total-earnings",
     icon: BsCoin,
     roles: ["seller"],
-  },
-  {
-    name: "Help",
-    path: "/dashboard/help",
-    icon: FaRegQuestionCircle,
-  },
+  }
 ]
 
 export default function Sidebar() {

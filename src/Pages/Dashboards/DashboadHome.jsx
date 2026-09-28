@@ -25,11 +25,6 @@ export default function DashboardHome() {
         We couldn't load your account
       </h2>
 
-      <p className="mx-auto mt-2 max-w-md text-[13px] leading-4.75 text-gray-600">
-        You're signed in, but the server didn't send your account details back,
-        so we don't know which dashboard to show you.
-      </p>
-
       <button
         type="button"
         onClick={() => syncUser()}
