@@ -12,12 +12,20 @@ export default function Navbar() {
     const {user, role} = useContext(AuthContext) 
     const { itemCount, cartLoading } = useContext(CartContext)
 
+    const navLinkClass = ({ isActive }) =>
+    `bg-transparent hover:bg-transparent hover:underline ${
+      isActive
+        ? 'text-orange-600 font-semibold'
+        : 'text-gray-700'
+    }`
+
     const links = ( <>    
-     <li> <NavLink to={'/'} className="hover:text-orange-600 hover:underline"> Home </NavLink> </li>
-     <li> <NavLink to={'/discover'} className="hover:text-orange-600 hover:underline"> Discover </NavLink> </li>
+     <li> <NavLink to={'/'}  className={navLinkClass}> Home </NavLink> </li>
+
+     <li> <NavLink to={'/discover'} className={navLinkClass}> Discover </NavLink> </li>
      
        { !user && (
-     <li> <NavLink to={'/login'} className="hover:text-orange-600 hover:underline">Login</NavLink> </li>
+     <li> <NavLink to={'/login'} className={navLinkClass}> Login </NavLink> </li>
     )}
   </>)
       

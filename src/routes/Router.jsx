@@ -18,6 +18,9 @@ import SellerRequests from "../Pages/Dashboards/Admin/SellerRequests";
 import SellerRoute from "./SellerRoute";
 import MenuManagement from "../Pages/Dashboards/Restaurant owners/MenuManagement";
 import Cart from "../shared components/Cart";
+import Checkout from "../Pages/Checkout/Checkout";
+import MockPay from "../Pages/Checkout/MockPay";
+import PaymentResult from "../Pages/Checkout/Paymentresult";
 
 export const router = createBrowserRouter([
   {
@@ -45,6 +48,18 @@ export const router = createBrowserRouter([
             path: '/cart',
             element: <PrivateRoute> <Cart /> </PrivateRoute>
         },
+        {
+            path: '/checkout',
+            element: <PrivateRoute> <Checkout /> </PrivateRoute>
+        },
+        {
+            path: '/checkout/pay/:checkoutId',
+            element: <PrivateRoute> <MockPay /> </PrivateRoute>
+        },
+        {
+            path: '/checkout/result/:checkoutId',
+            element: <PrivateRoute> <PaymentResult /> </PrivateRoute>
+        },        
       ]
   },
   {

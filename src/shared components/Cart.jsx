@@ -1,9 +1,11 @@
 import { useContext } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { CartContext } from '../context providers/CartProvider'
 import { formatPrice } from '../utils/menuCategories'
 
 export default function Cart() {
+  const navigate = useNavigate()
+
   const {
     items, subtotal, itemCount, cartLoading, busyId,
     setQuantity, removeItem, clearCart,
@@ -110,7 +112,8 @@ export default function Cart() {
           <p className="text-2xl font-bold">{formatPrice(subtotal)}</p>
         </div>
 
-        <button type="button" className="btn btn-primary">Checkout</button>
+        <button type="button" className="btn btn-primary"
+          onClick={() => navigate('/checkout')}>Checkout</button>
       </div>
     </section>
   )
